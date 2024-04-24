@@ -10,7 +10,8 @@ public class Board
         Columns = columns;
         Pieces = new Piece[rows, columns];
     }
-    /*public Piece Piece(int row, int column)
+
+    public Piece Piece(int row, int column) // Method to return a piece in a given position on the board
     {
         return Pieces[row, column];
     }
@@ -27,7 +28,7 @@ public class Board
     {
         if (PieceExists(position))
         {
-            throw new BoardException("There is already a piece in that position!");
+            // throw new BoardException("There is already a piece in that position!");
         }
         Pieces[position.Row, position.Column] = piece;
         piece.Position = position;
@@ -55,8 +56,7 @@ public class Board
     {
         if (!ValidPosition(position))
         {
-            throw new BoardException("Invalid position!");
+            //throw new BoardException("Invalid position!");
         }
     }
-    */
 }
