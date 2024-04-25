@@ -5,10 +5,10 @@ namespace chess_game.chess
     public class ChessMatch
     {
         public Board Board { get; private set; }
-        private int Turn;
-        private Color CurrentPlayer;
+        public int Turn { get; private set; }
+        public Color CurrentPlayer { get; private set; }
         public bool Checkmate { get; private set; }
-        public ChessMatch()
+        public ChessMatch() // Constructor to create a new chess match
         {
             Board = new Board(8, 8);
             Turn = 1;
@@ -16,15 +16,46 @@ namespace chess_game.chess
             Checkmate = false;
             PlacePieces();
         }
-        public void ExecuteMove(Position origin, Position destination)
+        public void ExecuteMove(Position origin, Position destination) // Method to execute a move on the board
         {
             Piece piece = Board.RemovePiece(origin);
             piece.IncrementMoveCount();
             Piece capturedPiece = Board.RemovePiece(destination);
             Board.PutPiece(piece, destination);
         }
-
-        private void PlacePieces()
+        public void PerformMove(Position origin, Position destination) // Method to perform a move on the board
+        {
+            ExecuteMove(origin, destination);
+            Turn++;
+            ChangePlayer();
+        }
+        public void ValidateOriginPosition(Position position) // Method to validate the origin position
+        {
+            if (Board.Piece(position) == null)
+            {
+                throw new BoardException("There is no piece on the chosen position!");
+            }
+            if (CurrentPlayer != Board.Piece(position).Color)
+            {
+                throw new BoardException("The chosen piece is not yours!");
+            }
+            if (!Board.Piece(position).IsThereAnyPossibleMove())
+            {
+                throw new BoardException("There are no possible moves for the chosen piece!");
+            }
+        }
+        private void ChangePlayer() // Method to change the player
+        {
+            if (CurrentPlayer == Color.White)
+            {
+                CurrentPlayer = Color.Black;
+            }
+            else
+            {
+                CurrentPlayer = Color.White;
+            }
+        }
+        private void PlacePieces() // Method to place the pieces on the board
         {
             Board.PutPiece(new Rook(Board, Color.White), new ChessPosition('c', 1).ToPosition());
             Board.PutPiece(new Rook(Board, Color.White), new ChessPosition('c', 2).ToPosition());
@@ -39,6 +70,5 @@ namespace chess_game.chess
             Board.PutPiece(new Rook(Board, Color.Black), new ChessPosition('e', 8).ToPosition());
             Board.PutPiece(new King(Board, Color.Black), new ChessPosition('d', 8).ToPosition());
         }
-
     }
 }

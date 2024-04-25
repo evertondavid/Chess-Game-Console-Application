@@ -4,24 +4,23 @@
 // that initializes the Queen's color and the board it belongs to.
 // The Queen class does not contain any additional methods or properties.
 // The Queen class overrides the ToString method to return the string "Q".
-
 namespace chess_game.chess
 {
     public class Queen : Piece
     {
-        public Queen(Board board, Color color) : base(board, color)
+        public Queen(Board board, Color color) : base(board, color) // Constructor
         {
         }
-        public override string ToString()
+        public override string ToString() // Method to return the string "Q"
         {
             return "Q";
         }
-        private bool CanMove(Position position)
+        private bool CanMove(Position position) // Method to check if a Queen piece can move to a position on the board or not
         {
             Piece piece = Board.Piece(position);
             return piece == null || piece.Color != Color;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object? obj) // Method to check if two Queen pieces are equal or not
         {
             return base.Equals(obj);
         }

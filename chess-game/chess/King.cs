@@ -3,7 +3,6 @@
 // to represent a King piece in a chess game. It contains a constructor
 // that initializes the King's color and the board it belongs to.
 // The King class does not contain any additional methods or properties.
-
 namespace chess_game.chess
 {
     public class King : Piece

@@ -3,15 +3,14 @@
 // to represent a Rook piece in a chess game. It contains a constructor
 // that initializes the Rook's color and the board it belongs to.
 // The Rook class does not contain any additional methods or properties.
-
 namespace chess_game.chess
 {
     public class Rook : Piece
     {
-        public Rook(Board board, Color color) : base(board, color)
+        public Rook(Board board, Color color) : base(board, color) // Constructor
         {
         }
-        public override string ToString()
+        public override string ToString() // Method to return the string "R"
         {
             return "R";
         }
@@ -39,7 +38,6 @@ namespace chess_game.chess
                 }
                 position.Row = position.Row - 1;
             }
-
             // Right
             position.SetValues(Position.Row, Position.Column + 1);
             while (Board.ValidPosition(position) && CanMove(position))
@@ -51,7 +49,6 @@ namespace chess_game.chess
                 }
                 position.Column = position.Column + 1;
             }
-
             // Below
             position.SetValues(Position.Row + 1, Position.Column);
             while (Board.ValidPosition(position) && CanMove(position))
@@ -74,7 +71,6 @@ namespace chess_game.chess
                 }
                 position.Column = position.Column - 1;
             }
-
             return matrix;
         }
     }

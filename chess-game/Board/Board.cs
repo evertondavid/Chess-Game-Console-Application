@@ -10,7 +10,6 @@ public class Board
         Columns = columns;
         Pieces = new Piece[rows, columns];
     }
-
     public Piece Piece(int row, int column) // Method to return a piece in a given position on the board
     {
         return Pieces[row, column];

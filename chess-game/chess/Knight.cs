@@ -8,19 +8,19 @@ namespace chess_game.chess
 {
     public class Knight : Piece
     {
-        public Knight(Board board, Color color) : base(board, color)
+        public Knight(Board board, Color color) : base(board, color) // Constructor
         {
         }
-        public override string ToString()
+        public override string ToString() // Method to return the string "N"
         {
             return "N";
         }
-        private bool CanMove(Position position)
+        private bool CanMove(Position position) // Method to check if a Knight piece can move to a position on the board or not
         {
             Piece piece = Board.Piece(position);
             return piece == null || piece.Color != Color;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object? obj) // Method to check if two Knight pieces are equal or not
         {
             return base.Equals(obj);
         }

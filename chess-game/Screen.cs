@@ -1,8 +1,6 @@
 using System;
 using chess_game.chess;
-
 namespace chess_game
-
 {
     public class Screen
     {

@@ -8,19 +8,19 @@ namespace chess_game.chess
 {
     public class Bishop : Piece
     {
-        public Bishop(Board board, Color color) : base(board, color)
+        public Bishop(Board board, Color color) : base(board, color) // Constructor to create a Bishop piece with a given board and color
         {
         }
-        public override string ToString()
+        public override string ToString() // Method to return the string "B" when a Bishop piece is printed on the board
         {
             return "B";
         }
-        private bool CanMove(Position position)
+        private bool CanMove(Position position) // Method to check if a Bishop piece can move to a given position on the board or not
         {
             Piece piece = Board.Piece(position);
             return piece == null || piece.Color != Color;
         }
-        public override bool Equals(object? obj)
+        public override bool Equals(object? obj) // Method to check if two Bishop pieces are the same or not
         {
             return base.Equals(obj);
         }
