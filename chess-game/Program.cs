@@ -3,15 +3,34 @@ using chess_game.chess;
 using System;
 try
 {
-    Board board = new Board(8, 8);
+    ChessMatch match = new ChessMatch();
+    System.Console.WriteLine();
+    while (!match.Checkmate)
+    {
+        try
+        {
+            Console.Clear();
+            Screen.PrintBoard(match.Board);
+            System.Console.WriteLine();
+            System.Console.Write("Origin: ");
+            Position origin = Screen.ReadChessPosition().ToPosition();
+            //bool[,] possibleMoves = match.Board.Piece(origin).PossibleMoves();
+            //Console.Clear();
+            //Screen.PrintBoard(match.Board, possibleMoves);
+            //System.Console.WriteLine();
+            System.Console.Write("Destination: ");
+            Position destination = Screen.ReadChessPosition().ToPosition();
+            match.ExecuteMove(origin, destination);
+        }
+        catch (BoardException e)
+        {
+            Console.WriteLine(e.Message);
+            Console.ReadLine();
+        }
+    }
 
-    board.PutPiece(new Rook(board, Color.Black), new Position(0, 0));
-    board.PutPiece(new Rook(board, Color.Black), new Position(1, 3));
-    board.PutPiece(new King(board, Color.Black), new Position(0, 2));
 
-    board.PutPiece(new Rook(board, Color.White), new Position(3, 5));
 
-    Screen.PrintBoard(board);
 }
 catch (BoardException e)
 {

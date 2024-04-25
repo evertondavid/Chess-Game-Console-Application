@@ -1,4 +1,8 @@
+using System;
+using chess_game.chess;
+
 namespace chess_game
+
 {
     public class Screen
     {
@@ -24,6 +28,14 @@ namespace chess_game
             }
             Console.WriteLine("  a b c d e f g h");
         }
+
+        public static ChessPosition ReadChessPosition() // Method to read a chess position from the user
+        {
+            string s = Console.ReadLine();
+            char column = s[0];
+            int row = int.Parse(s[1] + "");
+            return new ChessPosition(column, row);
+        }
         public static void PrintPiece(Piece piece) // Method to print a piece on the screen
         {
             if (piece.Color == Color.White)
@@ -38,5 +50,7 @@ namespace chess_game
                 Console.ForegroundColor = aux;
             }
         }
+
+
     }
 }

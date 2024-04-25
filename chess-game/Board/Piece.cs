@@ -13,4 +13,8 @@ public class Piece
         Color = color;
         MoveCount = 0;
     }
+    public void IncrementMoveCount()
+    {
+        MoveCount++;
+    }
 }
