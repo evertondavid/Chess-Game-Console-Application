@@ -16,7 +16,11 @@ public class Position
         Row = row;
         Column = column;
     }
-
+    public void SetValues(Position position)
+    {
+        Row = position.Row;
+        Column = position.Column;
+    }
     public override string ToString()
     {
         return $"{Row}, {Column}";

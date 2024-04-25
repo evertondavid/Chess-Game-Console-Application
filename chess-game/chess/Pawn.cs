@@ -20,5 +20,59 @@ namespace chess_game.chess
         {
             return "P";
         }
+        private bool CanMove(Position position)
+        {
+            Piece piece = Board.Piece(position);
+            return piece == null || piece.Color != Color;
+        }
+        public override bool Equals(object? obj)
+        {
+            return base.Equals(obj);
+        }
+        public override bool[,] PossibleMove() // Method to check if a move is possible for a Pawn piece on the board or not
+        {
+            bool[,] matrix = new bool[Board.Rows, Board.Columns];
+            Position position = new Position(0, 0);
+            // Above
+            if (Color == Color.White)
+            {
+                position.SetValues(Position.Row - 1, Position.Column);
+            }
+            else
+            {
+                position.SetValues(Position.Row + 1, Position.Column);
+            }
+            if (Board.ValidPosition(position) && CanMove(position))
+            {
+                matrix[position.Row, position.Column] = true;
+            }
+            // NorthEast
+            if (Color == Color.White)
+            {
+                position.SetValues(Position.Row - 1, Position.Column + 1);
+            }
+            else
+            {
+                position.SetValues(Position.Row + 1, Position.Column + 1);
+            }
+            if (Board.ValidPosition(position) && CanMove(position))
+            {
+                matrix[position.Row, position.Column] = true;
+            }
+            // NorthWest
+            if (Color == Color.White)
+            {
+                position.SetValues(Position.Row - 1, Position.Column - 1);
+            }
+            else
+            {
+                position.SetValues(Position.Row + 1, Position.Column - 1);
+            }
+            if (Board.ValidPosition(position) && CanMove(position))
+            {
+                matrix[position.Row, position.Column] = true;
+            }
+            return matrix;
+        }
     }
 }
