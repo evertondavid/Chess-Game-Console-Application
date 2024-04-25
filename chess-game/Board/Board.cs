@@ -28,7 +28,7 @@ public class Board
     {
         if (PieceExists(position))
         {
-            // throw new BoardException("There is already a piece in that position!");
+            throw new BoardException("There is already a piece in that position!");
         }
         Pieces[position.Row, position.Column] = piece;
         piece.Position = position;
@@ -56,7 +56,7 @@ public class Board
     {
         if (!ValidPosition(position))
         {
-            //throw new BoardException("Invalid position!");
+            throw new BoardException("Invalid position!");
         }
     }
 }
