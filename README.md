@@ -1,0 +1,17 @@
+Development of a Chess game through a Console application using the following C# language requirements:
+- Builders;
+- Word this;
+- Overloading;
+- Encapsulation;
+- Associations;
+- Inheritance;
+- Abstract class;
+- Overlapping;
+- Polymorphism;
+- Stative elements;
+- Enumerated types;
+- Exceptions;
+- Vectors;
+- Arrays;
+- Lists;
+- Sets.
