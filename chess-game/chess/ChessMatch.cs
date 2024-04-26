@@ -125,11 +125,52 @@ namespace chess_game.chess
         }
         public void PerformMove(Position origin, Position destination) // Method to perform a move on the board
         {
+
             Piece capturedPiece = ExecuteMove(origin, destination);
             if (IsInCheck(CurrentPlayer))
             {
                 UndoMove(origin, destination, capturedPiece);
                 throw new BoardException("You can't put yourself in check!");
+            }
+            // #SpecialMove Promotion
+            Piece piece = Board.Piece(destination);
+            if (piece is Pawn)
+            {
+                if ((piece.Color == Color.White && destination.Row == 0) || (piece.Color == Color.Black && destination.Row == 7))
+                {
+                    piece = Board.RemovePiece(destination);
+                    Pieces.Remove(piece);
+                    // chosse the piece to promote between Queen, Rook, Bishop and Knight
+                    System.Console.WriteLine("Enter the piece to promote (Q, R, B, N): ");
+                    char promotion = char.Parse(Console.ReadLine());
+                    Piece newPiece = null;
+                    switch (promotion)
+                    {
+                        case 'Q':
+                            newPiece = new Queen(Board, piece.Color);
+                            break;
+                        case 'R':
+                            newPiece = new Rook(Board, piece.Color);
+                            break;
+                        case 'B':
+                            newPiece = new Bishop(Board, piece.Color);
+                            break;
+                        case 'N':
+                            newPiece = new Knight(Board, piece.Color);
+                            break;
+                        default:
+                            newPiece = new Queen(Board, piece.Color);
+                            break;
+                    }
+                    Board.PutPiece(newPiece, destination);
+                    Pieces.Add(newPiece);
+
+                    /*
+                    Piece queen = new Queen(Board, piece.Color);
+                    Board.PutPiece(queen, destination);
+                    Pieces.Add(queen);
+                    */
+                }
             }
             if (IsInCheck(Opponent(CurrentPlayer)))
             {
@@ -149,7 +190,6 @@ namespace chess_game.chess
                 ChangePlayer();
             }
             // En passant
-            Piece piece = Board.Piece(destination);
             if (piece is Pawn && (destination.Row == origin.Row - 2 || destination.Row == origin.Row + 2))
             {
                 EnPassantVulnerable = piece;
