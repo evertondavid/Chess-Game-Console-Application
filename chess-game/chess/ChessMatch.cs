@@ -44,6 +44,13 @@ namespace chess_game.chess
                 throw new BoardException("There are no possible moves for the chosen piece!");
             }
         }
+        public void ValidateDestinationPosition(Position origin, Position destination) // Method to validate the destination position
+        {
+            if (!Board.Piece(origin).PossibleMove(destination))
+            {
+                throw new BoardException("Invalid destination position!");
+            }
+        }
         private void ChangePlayer() // Method to change the player
         {
             if (CurrentPlayer == Color.White)

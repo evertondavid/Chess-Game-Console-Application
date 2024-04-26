@@ -24,6 +24,7 @@ try
             System.Console.WriteLine();
             System.Console.Write("Destination: ");
             Position destination = Screen.ReadChessPosition().ToPosition();
+            match.ValidateDestinationPosition(origin, destination);
             match.PerformMove(origin, destination);
         }
         catch (BoardException e)
