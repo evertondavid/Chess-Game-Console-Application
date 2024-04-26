@@ -10,16 +10,17 @@ try
         try
         {
             Console.Clear();
-            Screen.PrintBoard(match.Board);
-            System.Console.WriteLine();
-            System.Console.WriteLine("Turn: " + match.Turn);
-            System.Console.WriteLine("Waiting move: " + match.CurrentPlayer);
+            Screen.PrintMatch(match);
+            //Screen.PrintBoard(match.Board);
+            //System.Console.WriteLine();
+            //System.Console.WriteLine("Turn: " + match.Turn);
+            //System.Console.WriteLine("Waiting move: " + match.CurrentPlayer);
             System.Console.WriteLine();
             System.Console.Write("Origin: ");
             Position origin = Screen.ReadChessPosition().ToPosition();
             match.ValidateOriginPosition(origin);
             bool[,] possibleMoves = match.Board.Piece(origin).PossibleMove();
-            Console.Clear();
+            Console.Clear();  //  ok
             Screen.PrintBoard(match.Board, possibleMoves);
             System.Console.WriteLine();
             System.Console.Write("Destination: ");
@@ -33,6 +34,8 @@ try
             Console.ReadLine();
         }
     }
+    Console.Clear();
+    Screen.PrintMatch(match);
 }
 catch (BoardException e)
 {

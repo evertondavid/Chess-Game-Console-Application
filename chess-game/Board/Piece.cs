@@ -13,9 +13,14 @@ public abstract class Piece
         Color = color;
         MoveCount = 0;
     }
+
     public void IncrementMoveCount() // Method to increment the move count of a piece by 1 when it moves
     {
         MoveCount++;
+    }
+    public void DecrementMoveCount() // Method to decrement the move count of a piece by 1 when it moves
+    {
+        MoveCount--;
     }
     public abstract bool[,] PossibleMove(); // Method to check if a move is possible for a piece
     public bool PossibleMove(Position position) // Method to check if a move is possible for a piece
