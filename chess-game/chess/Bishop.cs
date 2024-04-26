@@ -28,7 +28,7 @@ namespace chess_game.chess
         {
             bool[,] matrix = new bool[Board.Rows, Board.Columns];
             Position position = new Position(0, 0);
-            // Above
+            // Northwest
             position.SetValues(Position.Row - 1, Position.Column - 1);
             while (Board.ValidPosition(position) && CanMove(position))
             {
@@ -37,10 +37,9 @@ namespace chess_game.chess
                 {
                     break;
                 }
-                position.Row = position.Row - 1;
-                position.Column = position.Column - 1;
+                position.SetValues(position.Row - 1, position.Column - 1);
             }
-            // NorthEast
+            // Northeast
             position.SetValues(Position.Row - 1, Position.Column + 1);
             while (Board.ValidPosition(position) && CanMove(position))
             {
@@ -51,7 +50,7 @@ namespace chess_game.chess
                 }
                 position.SetValues(position.Row - 1, position.Column + 1);
             }
-            // Right
+            // Southeast
             position.SetValues(Position.Row + 1, Position.Column + 1);
             while (Board.ValidPosition(position) && CanMove(position))
             {
@@ -62,7 +61,7 @@ namespace chess_game.chess
                 }
                 position.SetValues(position.Row + 1, position.Column + 1);
             }
-            // SouthEast
+            // Southwest
             position.SetValues(Position.Row + 1, Position.Column - 1);
             while (Board.ValidPosition(position) && CanMove(position))
             {

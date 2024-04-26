@@ -7,8 +7,10 @@ namespace chess_game.chess
 {
     public class King : Piece
     {
-        public King(Board board, Color color) : base(board, color) // Constructor to create a King piece with a given board and color
+        private ChessMatch Match;
+        public King(Board board, Color color, ChessMatch chess) : base(board, color) // Constructor to create a King piece with a given board and color
         {
+            Match = chess;
         }
         public override string ToString() // Method to print a King piece on the board
         {
@@ -22,6 +24,11 @@ namespace chess_game.chess
         public override bool Equals(object? obj) // Method to check if two King pieces are the same or not
         {
             return base.Equals(obj);
+        }
+        private bool TestRookCastling(Position position) // Method to test if a King piece can castle with a Rook piece
+        {
+            Piece piece = Board.Piece(position);
+            return piece != null && piece is Rook && piece.Color == Color && piece.MoveCount == 0;
         }
         public override bool[,] PossibleMove() // Method to check if a move is possible for a King piece on the board or not 
         {
@@ -74,6 +81,33 @@ namespace chess_game.chess
             if (Board.ValidPosition(position) && CanMove(position))
             {
                 matrix[position.Row, position.Column] = true;
+            }
+            // # Castling
+            if (MoveCount == 0 && !Match.Check)
+            {
+                // Short Castling
+                Position rookPosition = new Position(Position.Row, Position.Column + 3);
+                if (TestRookCastling(rookPosition))
+                {
+                    Position p1 = new Position(Position.Row, Position.Column + 1);
+                    Position p2 = new Position(Position.Row, Position.Column + 2);
+                    if (Board.Piece(p1) == null && Board.Piece(p2) == null)
+                    {
+                        matrix[Position.Row, Position.Column + 2] = true;
+                    }
+                }
+                // Long castling
+                rookPosition = new Position(Position.Row, Position.Column - 4);
+                if (TestRookCastling(rookPosition))
+                {
+                    Position p1 = new Position(Position.Row, Position.Column - 1);
+                    Position p2 = new Position(Position.Row, Position.Column - 2);
+                    Position p3 = new Position(Position.Row, Position.Column - 3);
+                    if (Board.Piece(p1) == null && Board.Piece(p2) == null && Board.Piece(p3) == null)
+                    {
+                        matrix[Position.Row, Position.Column - 2] = true;
+                    }
+                }
             }
             return matrix;
         }

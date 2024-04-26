@@ -33,44 +33,52 @@ namespace chess_game.chess
         {
             bool[,] matrix = new bool[Board.Rows, Board.Columns];
             Position position = new Position(0, 0);
-            // Above
+            //Above
             if (Color == Color.White)
             {
                 position.SetValues(Position.Row - 1, Position.Column);
+                if (Board.ValidPosition(position) && CanMove(position))
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
+                position.SetValues(Position.Row - 2, Position.Column);
+                if (Board.ValidPosition(position) && CanMove(position) && MoveCount == 0)
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
+                position.SetValues(Position.Row - 1, Position.Column - 1);
+                if (Board.ValidPosition(position) && CanMove(position))
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
+                position.SetValues(Position.Row - 1, Position.Column + 1);
+                if (Board.ValidPosition(position) && CanMove(position))
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
             }
-            else
+            else // Below
             {
                 position.SetValues(Position.Row + 1, Position.Column);
-            }
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // NorthEast
-            if (Color == Color.White)
-            {
-                position.SetValues(Position.Row - 1, Position.Column + 1);
-            }
-            else
-            {
-                position.SetValues(Position.Row + 1, Position.Column + 1);
-            }
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // NorthWest
-            if (Color == Color.White)
-            {
-                position.SetValues(Position.Row - 1, Position.Column - 1);
-            }
-            else
-            {
+                if (Board.ValidPosition(position) && CanMove(position))
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
+                position.SetValues(Position.Row + 2, Position.Column);
+                if (Board.ValidPosition(position) && CanMove(position) && MoveCount == 0)
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
                 position.SetValues(Position.Row + 1, Position.Column - 1);
-            }
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
+                if (Board.ValidPosition(position) && CanMove(position))
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
+                position.SetValues(Position.Row + 1, Position.Column + 1);
+                if (Board.ValidPosition(position) && CanMove(position))
+                {
+                    matrix[position.Row, position.Column] = true;
+                }
             }
             return matrix;
         }
