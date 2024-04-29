@@ -1,61 +1,126 @@
-namespace chess_game;
-public class Board
+using chess_game;
+using System;
+
+namespace chess_game
 {
-    public int Rows { get; set; }
-    public int Columns { get; set; }
-    private Piece[,] Pieces;
-    public Board(int rows, int columns) // Constructor to create a board with a given number of rows and columns
+    /// <summary>
+    /// Represents the chess board.
+    /// </summary>
+    public class Board
     {
-        Rows = rows;
-        Columns = columns;
-        Pieces = new Piece[rows, columns];
-    }
-    public Piece Piece(int row, int column) // Method to return a piece in a given position on the board
-    {
-        return Pieces[row, column];
-    }
-    public Piece Piece(Position position) // Method to return a piece in a given position on the board
-    {
-        return Pieces[position.Row, position.Column];
-    }
-    public bool PieceExists(Position position) // Method to check if there is a piece in a given position on the board
-    {
-        ValidatePosition(position);
-        return Piece(position) != null;
-    }
-    public void PutPiece(Piece piece, Position position) // Method to put a piece on the board in a given position
-    {
-        if (PieceExists(position))
+        /// <summary>
+        /// The number of rows on the board.
+        /// </summary>
+        public int Rows { get; }
+
+        /// <summary>
+        /// The number of columns on the board.
+        /// </summary>
+        public int Columns { get; }
+
+        private Piece[,] Pieces;
+
+        /// <summary>
+        /// Constructor to create a board with a given number of rows and columns.
+        /// </summary>
+        /// <param name="rows">The number of rows on the board.</param>
+        /// <param name="columns">The number of columns on the board.</param>
+        public Board(int rows, int columns)
         {
-            throw new BoardException("There is already a piece in that position!");
+            Rows = rows;
+            Columns = columns;
+            Pieces = new Piece[rows, columns];
         }
-        Pieces[position.Row, position.Column] = piece;
-        piece.Position = position;
-    }
-    public Piece? RemovePiece(Position position) // Method to remove a piece from the board and return it to the caller
-    {
-        if (Piece(position) == null)
+
+        /// <summary>
+        /// Gets the piece at the specified position on the board.
+        /// </summary>
+        /// <param name="row">The row of the position.</param>
+        /// <param name="column">The column of the position.</param>
+        /// <returns>The piece at the specified position.</returns>
+        public Piece Piece(int row, int column)
         {
-            return null;
+            return Pieces[row, column];
         }
-        Piece aux = Piece(position); // Store the piece in a variable to return it later
-        aux.Position = null;
-        Pieces[position.Row, position.Column] = null;
-        return aux;
-    }
-    public bool ValidPosition(Position position) // Method to check if a position is valid on the board (inside the board) or not
-    {
-        if (position.Row < 0 || position.Row >= Rows || position.Column < 0 || position.Column >= Columns)
+
+        /// <summary>
+        /// Gets the piece at the specified position on the board.
+        /// </summary>
+        /// <param name="position">The position to get the piece from.</param>
+        /// <returns>The piece at the specified position.</returns>
+        public Piece Piece(Position position)
         {
-            return false;
+            return Pieces[position.Row, position.Column];
         }
-        return true;
-    }
-    public void ValidatePosition(Position position) // Method to validate a position on the board (inside the board) or not
-    {
-        if (!ValidPosition(position))
+
+        /// <summary>
+        /// Checks if a piece exists at the specified position on the board.
+        /// </summary>
+        /// <param name="position">The position to check.</param>
+        /// <returns>True if a piece exists at the specified position; otherwise, false.</returns>
+        public bool PieceExists(Position position)
         {
-            throw new BoardException("Invalid position!");
+            ValidatePosition(position);
+            return Piece(position) != null;
+        }
+
+        /// <summary>
+        /// Puts a piece on the board at the specified position.
+        /// </summary>
+        /// <param name="piece">The piece to put on the board.</param>
+        /// <param name="position">The position to put the piece.</param>
+        public void PutPiece(Piece piece, Position position)
+        {
+            if (PieceExists(position))
+            {
+                throw new BoardException("There is already a piece in that position!");
+            }
+            Pieces[position.Row, position.Column] = piece;
+            piece.Position = position;
+        }
+
+        /// <summary>
+        /// Removes a piece from the board at the specified position.
+        /// </summary>
+        /// <param name="position">The position to remove the piece from.</param>
+        /// <returns>The piece removed from the board.</returns>
+        public Piece? RemovePiece(Position position)
+        {
+            if (Piece(position) == null)
+            {
+                return null;
+            }
+            Piece aux = Piece(position); // Store the piece in a variable to return it later
+            aux.Position = null;
+            Pieces[position.Row, position.Column] = null;
+            return aux;
+        }
+
+        /// <summary>
+        /// Checks if a position is valid on the board (inside the board) or not.
+        /// </summary>
+        /// <param name="position">The position to check.</param>
+        /// <returns>True if the position is valid; otherwise, false.</returns>
+        public bool ValidPosition(Position position)
+        {
+            if (position.Row < 0 || position.Row >= Rows || position.Column < 0 || position.Column >= Columns)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Validates a position on the board (inside the board) or not.
+        /// </summary>
+        /// <param name="position">The position to validate.</param>
+        /// <exception cref="BoardException">Thrown when the position is invalid.</exception>
+        public void ValidatePosition(Position position)
+        {
+            if (!ValidPosition(position))
+            {
+                throw new BoardException("Invalid position!");
+            }
         }
     }
 }
