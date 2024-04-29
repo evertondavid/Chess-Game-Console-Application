@@ -1,124 +1,97 @@
-// Purpose: Pawn class implementation. Represents a Pawn piece in a chess game.
-// The Pawn class is a subclass of the Piece class. It is used
-// to represent a Pawn piece in a chess game. It contains a constructor
-// that initializes the Pawn's color and the board it belongs to.
-// The Pawn class does not contain any additional methods or properties.
-// The Pawn class overrides the ToString method to return the string "P".
-// The Pawn class is used to represent a Pawn piece in a chess game.
-// The Pawn class is a subclass of the Piece class.
-// The Pawn class contains a constructor that initializes the Pawn's color and the board it belongs to.
-// The Pawn class overrides the ToString method to return the string "P".
-// The Pawn class does not contain any additional methods or properties.
+using System;
+
 namespace chess_game.chess
 {
+    /// <summary>
+    /// Represents a Pawn piece in a chess game.
+    /// </summary>
     public class Pawn : Piece
     {
-        private ChessMatch ChessMatch; // Property to store the ChessMatch object
-        public Pawn(Board board, Color color, ChessMatch chessMatch) : base(board, color, color == Color.White ? "♙" : "♟︎")
+        private readonly ChessMatch _chessMatch; // Property to store the ChessMatch object
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pawn"/> class with the specified board, color, and chess match.
+        /// </summary>
+        /// <param name="board">The board the pawn belongs to.</param>
+        /// <param name="color">The color of the pawn.</param>
+        /// <param name="chessMatch">The chess match the pawn belongs to.</param>
+        public Pawn(Board board, Color color, ChessMatch chessMatch) : base(board, color, color == Color.White ? "♙" : "♟")
         {
-            ChessMatch = chessMatch;
+            _chessMatch = chessMatch;
         }
-        public override string ToString() // Method to return the string "P"
+
+        /// <summary>
+        /// Returns the string representation of the pawn piece.
+        /// </summary>
+        /// <returns>The symbol representing the pawn piece.</returns>
+        public override string ToString()
         {
             return Symbol;
         }
-        private bool ThereIsEnemy(Position position) // Method to check if there is an enemy piece in a given position on the board or not
-        {
-            Piece piece = Board.Piece(position);
-            return piece != null && piece.Color != Color;
-        }
-        private bool Free(Position position) // Method to check if a position on the board is free or not
-        {
-            return Board.Piece(position) == null;
-        }
-        public override bool[,] PossibleMove() // Method to check if a move is possible for a Pawn piece on the board or not
+
+        /// <summary>
+        /// Determines the possible moves for the pawn piece on the board.
+        /// </summary>
+        /// <returns>A matrix indicating the possible moves for the pawn piece.</returns>
+        public override bool[,] PossibleMove()
         {
             bool[,] matrix = new bool[Board.Rows, Board.Columns];
             Position position = new Position(0, 0);
-            if (Color == Color.White)
+            int direction = (Color == Color.White) ? -1 : 1;
+
+            // Forward move
+            position.SetValues(Position.Row + direction, Position.Column);
+            if (Board.ValidPosition(position) && Board.Piece(position) == null)
             {
-                position.SetValues(Position.Row - 1, Position.Column);
-                if (Board.ValidPosition(position) && Free(position))
+                matrix[position.Row, position.Column] = true;
+
+                // Double move from initial position
+                position.SetValues(Position.Row + 2 * direction, Position.Column);
+                if (Board.ValidPosition(position) && Board.Piece(position) == null && MoveCount == 0)
                 {
                     matrix[position.Row, position.Column] = true;
-                }
-                position.SetValues(Position.Row - 2, Position.Column);
-                if (Board.ValidPosition(position) && Free(position) && MoveCount == 0)
-                {
-                    matrix[position.Row, position.Column] = true;
-                }
-                position.SetValues(Position.Row - 1, Position.Column - 1);
-                if (Board.ValidPosition(position) && ThereIsEnemy(position))
-                {
-                    matrix[position.Row, position.Column] = true;
-                }
-                position.SetValues(Position.Row - 1, Position.Column + 1);
-                if (Board.ValidPosition(position) && ThereIsEnemy(position))
-                {
-                    matrix[position.Row, position.Column] = true;
-                }
-                // #SpecialMove En Passant
-                if (Position.Row == 3)
-                {
-                    Position left = new Position(Position.Row, Position.Column - 1);
-                    if (Board.ValidPosition(left) && ThereIsEnemy(left) && Board.Piece(left) == ChessMatch.EnPassantVulnerable)
-                    {
-                        matrix[left.Row - 1, left.Column] = true;
-                    }
-                    Position right = new Position(Position.Row, Position.Column + 1);
-                    if (Board.ValidPosition(right) && ThereIsEnemy(right) && Board.Piece(right) == ChessMatch.EnPassantVulnerable)
-                    {
-                        matrix[right.Row - 1, right.Column] = true;
-                    }
                 }
             }
-            else
+
+            // Diagonal captures
+            position.SetValues(Position.Row + direction, Position.Column - 1);
+            if (Board.ValidPosition(position) && ThereIsEnemy(position))
             {
-                position.SetValues(Position.Row + 1, Position.Column);
-                if (Board.ValidPosition(position) && Free(position))
+                matrix[position.Row, position.Column] = true;
+            }
+            position.SetValues(Position.Row + direction, Position.Column + 1);
+            if (Board.ValidPosition(position) && ThereIsEnemy(position))
+            {
+                matrix[position.Row, position.Column] = true;
+            }
+
+            // #SpecialMove En Passant
+            if (Position.Row == 3 || Position.Row == 4) // White pawn at row 3 or black pawn at row 4
+            {
+                position.SetValues(Position.Row, Position.Column - 1);
+                if (Board.ValidPosition(position) && ThereIsEnemy(position) && Board.Piece(position) == _chessMatch.EnPassantVulnerable)
                 {
-                    matrix[position.Row, position.Column] = true;
+                    matrix[position.Row + direction, position.Column] = true;
                 }
-                position.SetValues(Position.Row + 2, Position.Column);
-                if (Board.ValidPosition(position) && Free(position) && MoveCount == 0)
+                position.SetValues(Position.Row, Position.Column + 1);
+                if (Board.ValidPosition(position) && ThereIsEnemy(position) && Board.Piece(position) == _chessMatch.EnPassantVulnerable)
                 {
-                    matrix[position.Row, position.Column] = true;
-                }
-                position.SetValues(Position.Row + 1, Position.Column - 1);
-                if (Board.ValidPosition(position) && ThereIsEnemy(position))
-                {
-                    matrix[position.Row, position.Column] = true;
-                }
-                position.SetValues(Position.Row + 1, Position.Column + 1);
-                if (Board.ValidPosition(position) && ThereIsEnemy(position))
-                {
-                    matrix[position.Row, position.Column] = true;
-                }
-                // #SpecialMove En Passant
-                if (Position.Row == 4)
-                {
-                    Position left = new Position(Position.Row, Position.Column - 1);
-                    if (Board.ValidPosition(left) && ThereIsEnemy(left) && Board.Piece(left) == ChessMatch.EnPassantVulnerable)
-                    {
-                        matrix[left.Row + 1, left.Column] = true;
-                    }
-                    Position right = new Position(Position.Row, Position.Column + 1);
-                    if (Board.ValidPosition(right) && ThereIsEnemy(right) && Board.Piece(right) == ChessMatch.EnPassantVulnerable)
-                    {
-                        matrix[right.Row + 1, right.Column] = true;
-                    }
+                    matrix[position.Row + direction, position.Column] = true;
                 }
             }
+
             return matrix;
         }
-        private bool CanMove(Position position) // Method to check if a Pawn piece can move to a position on the board or not
+
+        /// <summary>
+        /// Checks if there is an enemy piece in the specified position on the board.
+        /// </summary>
+        /// <param name="position">The position to check.</param>
+        /// <returns>True if there is an enemy piece at the position, otherwise false.</returns>
+        private bool ThereIsEnemy(Position position)
         {
             Piece piece = Board.Piece(position);
-            return piece == null || piece.Color != Color;
-        }
-        public override bool Equals(object? obj) // Method to check if two Pawn pieces are equal or not
-        {
-            return base.Equals(obj);
+            return piece != null && piece.Color != Color;
         }
     }
 }

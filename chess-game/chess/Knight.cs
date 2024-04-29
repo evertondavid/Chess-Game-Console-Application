@@ -1,74 +1,68 @@
-// Purpose: Knight class implementation. Represents a Knight piece in a chess game.
-// The Knight class is a subclass of the Piece class. It is used
-// to represent a Knight piece in a chess game. It contains a constructor
-// that initializes the Knight's color and the board it belongs to.
-// The Knight class does not contain any additional methods or properties.
-// The Knight class overrides the ToString method to return the string "N".
+using System;
+
 namespace chess_game.chess
 {
+    /// <summary>
+    /// Represents a Knight piece in a chess game.
+    /// </summary>
     public class Knight : Piece
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Knight"/> class with the specified color and board.
+        /// </summary>
+        /// <param name="board">The board the knight belongs to.</param>
+        /// <param name="color">The color of the knight.</param>
         public Knight(Board board, Color color) : base(board, color, color == Color.White ? "♘" : "♞")
         {
         }
-        public override string ToString() // Method to return the string "N"
+
+        /// <summary>
+        /// Returns the string representation of the knight piece.
+        /// </summary>
+        /// <returns>The symbol representing the knight piece.</returns>
+        public override string ToString()
         {
             return Symbol;
         }
-        private bool CanMove(Position position) // Method to check if a Knight piece can move to a position on the board or not
+
+        /// <summary>
+        /// Determines if the knight can move to the specified position on the board.
+        /// </summary>
+        /// <param name="position">The position to check.</param>
+        /// <returns>True if the knight can move to the specified position, otherwise false.</returns>
+        private bool CanMove(Position position)
         {
             Piece piece = Board.Piece(position);
             return piece == null || piece.Color != Color;
         }
-        public override bool Equals(object? obj) // Method to check if two Knight pieces are equal or not
-        {
-            return base.Equals(obj);
-        }
-        public override bool[,] PossibleMove() // Method to check if a move is possible for a Knight piece on the board or not
+
+        /// <summary>
+        /// Determines the possible moves for the knight piece on the board.
+        /// </summary>
+        /// <returns>A matrix indicating the possible moves for the knight piece.</returns>
+        /// <summary>
+        /// Determines the possible moves for the knight piece on the board.
+        /// </summary>
+        /// <returns>A matrix indicating the possible moves for the knight piece.</returns>
+        public override bool[,] PossibleMove()
         {
             bool[,] matrix = new bool[Board.Rows, Board.Columns];
-            Position position = new Position(0, 0);
-            // Above
-            position.SetValues(Position.Row - 1, Position.Column - 2);
-            if (Board.ValidPosition(position) && CanMove(position))
+
+            int[][] moves = { new int[] { -1, -2 }, new int[] { -2, -1 }, new int[] { -2, 1 }, new int[] { -1, 2 },
+                              new int[] { 1, 2 }, new int[] { 2, 1 }, new int[] { 2, -1 }, new int[] { 1, -2 } };
+
+            for (int i = 0; i < moves.Length; i++)
             {
-                matrix[position.Row, position.Column] = true;
+                int row = Position.Row + moves[i][0];
+                int col = Position.Column + moves[i][1];
+                Position newPosition = new Position(row, col);
+
+                if (Board.ValidPosition(newPosition) && CanMove(newPosition))
+                {
+                    matrix[row, col] = true;
+                }
             }
-            position.SetValues(Position.Row - 2, Position.Column - 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            position.SetValues(Position.Row - 2, Position.Column + 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            position.SetValues(Position.Row - 1, Position.Column + 2);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            position.SetValues(Position.Row + 1, Position.Column + 2);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            position.SetValues(Position.Row + 2, Position.Column + 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            position.SetValues(Position.Row + 2, Position.Column - 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            position.SetValues(Position.Row + 1, Position.Column - 2);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
+
             return matrix;
         }
     }

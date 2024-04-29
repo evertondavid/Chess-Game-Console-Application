@@ -1,10 +1,15 @@
+using System;
 using chess_game.chess;
 
 namespace chess_game
 {
+    /// <summary>
+    /// Provides methods to display the chess match on the console.
+    /// </summary>
     public class Screen
     {
-        private static readonly ConsoleColor BlackPieceColor = ConsoleColor.Yellow; // Color used for black chess pieces
+        private static readonly ConsoleColor BlackPieceColor = ConsoleColor.Yellow;
+
         /// <summary>
         /// Prints the current state of the chess match to the console.
         /// </summary>
@@ -27,6 +32,7 @@ namespace chess_game
                 }
             }
         }
+
         /// <summary>
         /// Prints the pieces captured during the game.
         /// </summary>
@@ -45,6 +51,7 @@ namespace chess_game
             Console.ForegroundColor = originalColor;
             Console.WriteLine();
         }
+
         /// <summary>
         /// Prints a set of pieces.
         /// </summary>
@@ -57,28 +64,6 @@ namespace chess_game
                 Console.Write(x + " ");
             }
             Console.Write("]");
-        }
-        /// <summary>
-        /// Prints the board to the console.
-        /// </summary>
-        /// <param name="board">The board to print.</param>
-        public static void PrintBoard(Board board)
-        {
-            ConsoleColor originalBackground = Console.BackgroundColor;
-            ConsoleColor defaultBackground = ConsoleColor.Black;  // Using a darker default background
-
-            Console.BackgroundColor = defaultBackground;
-            for (int i = 0; i < board.Rows; i++)
-            {
-                Console.Write(8 - i + " "); // Print the row number
-                for (int j = 0; j < board.Columns; j++)
-                {
-                    PrintPiece(board.Piece(i, j));
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("  a  b  c  d  e  f  g  h  "); // Column labels
-            Console.BackgroundColor = originalBackground;
         }
 
         /// <summary>
@@ -114,6 +99,52 @@ namespace chess_game
         }
 
         /// <summary>
+        /// Prints the board to the console.
+        /// </summary>
+        /// <param name="board">The board to print.</param>
+        public static void PrintBoard(Board board)
+        {
+            ConsoleColor originalBackground = Console.BackgroundColor;
+            ConsoleColor defaultBackground = ConsoleColor.Black;
+
+            Console.BackgroundColor = defaultBackground;
+            for (int i = 0; i < board.Rows; i++)
+            {
+                Console.Write(8 - i + " ");
+                for (int j = 0; j < board.Columns; j++)
+                {
+                    PrintPiece(board.Piece(i, j));
+                }
+                Console.WriteLine();
+            }
+            Console.WriteLine("  a  b  c  d  e  f  g  h  ");
+            Console.BackgroundColor = originalBackground;
+        }
+
+        /// <summary>
+        /// Prints a single chess piece on the console.
+        /// </summary>
+        /// <param name="piece">The piece to print.</param>
+        private static void PrintPiece(Piece piece)
+        {
+            if (piece == null)
+            {
+                Console.Write("- ");
+            }
+            else
+            {
+                ConsoleColor originalColor = Console.ForegroundColor;
+                if (piece.Color == Color.Black)
+                {
+                    Console.ForegroundColor = BlackPieceColor;
+                }
+                Console.Write(piece.Symbol + " ");
+                Console.ForegroundColor = originalColor;
+            }
+            Console.Write(" ");
+        }
+
+        /// <summary>
         /// Reads a chess position from the console input.
         /// </summary>
         /// <returns>The chess position entered by the user.</returns>
@@ -137,32 +168,6 @@ namespace chess_game
 
                 return new ChessPosition(column, row);
             }
-        }
-        /// <summary>
-        /// Prints a single chess piece on the console.
-        /// </summary>
-        /// <param name="piece">The piece to print.</param>
-        private static void PrintPiece(Piece piece)
-        {
-            if (piece == null)
-            {
-                Console.Write("- ");
-            }
-            else
-            {
-                ConsoleColor originalColor = Console.ForegroundColor; // Save the current foreground color
-                if (piece.Color == Color.White)
-                {
-                    Console.Write(piece.Symbol + " ");
-                }
-                else
-                {
-                    Console.ForegroundColor = BlackPieceColor; // Change color for black pieces
-                    Console.Write(piece.Symbol + " ");
-                    Console.ForegroundColor = originalColor; // Restore the original color
-                }
-            }
-            Console.Write(" "); // Ensures spacing between board squares
         }
     }
 }
