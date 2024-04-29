@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-using System;
-
->>>>>>> origin/main
 namespace chess_game.chess
 {
     /// <summary>
