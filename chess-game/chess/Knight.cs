@@ -8,12 +8,12 @@ namespace chess_game.chess
 {
     public class Knight : Piece
     {
-        public Knight(Board board, Color color) : base(board, color) // Constructor
+        public Knight(Board board, Color color) : base(board, color, color == Color.White ? "♘" : "♞")
         {
         }
         public override string ToString() // Method to return the string "N"
         {
-            return "N";
+            return Symbol;
         }
         private bool CanMove(Position position) // Method to check if a Knight piece can move to a position on the board or not
         {

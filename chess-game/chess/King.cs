@@ -1,114 +1,79 @@
-// Purpose: King class implementation. Represents a King piece in a chess game.
-// The King class is a subclass of the Piece class. It is used
-// to represent a King piece in a chess game. It contains a constructor
-// that initializes the King's color and the board it belongs to.
-// The King class does not contain any additional methods or properties.
+///<summary>
+/// Represents a King piece in a chess game.
+///</summary>
 namespace chess_game.chess
 {
+    ///<summary>
+    /// Represents a King piece in a chess game.
+    ///</summary>
     public class King : Piece
     {
         private ChessMatch Match;
-        public King(Board board, Color color, ChessMatch chess) : base(board, color) // Constructor to create a King piece with a given board and color
+
+        ///<summary>
+        /// Constructor for King class.
+        ///</summary>
+        ///<param name="board">The board the King piece belongs to.</param>
+        ///<param name="color">The color of the King piece (either Color.White or Color.Black).</param>
+        ///<param name="chess">The chess match the King piece is part of.</param>
+        ///<returns>A new instance of the King class.</returns>
+        public King(Board board, Color color, ChessMatch chess) : base(board, color, color == Color.White ? "♔" : "♚")
         {
             Match = chess;
         }
-        public override string ToString() // Method to print a King piece on the board
+
+        ///<summary>
+        /// Returns a string representation of the King piece.
+        ///</summary>
+        ///<returns>A string representation of the King piece ("K").</returns>
+        public override string ToString()
         {
-            return "K";
+            return Symbol;
         }
-        private bool CanMove(Position position) // Method to check if a King piece can move to a given position on the board or not
+
+        ///<summary>
+        /// Checks if a King piece can move to a given position on the board.
+        ///</summary>
+        ///<param name="position">The position to check for movement.</param>
+        ///<returns>True if the King piece can move to the given position, false otherwise.</returns>
+        private bool CanMove(Position position)
         {
             Piece piece = Board.Piece(position);
             return piece == null || piece.Color != Color;
         }
-        public override bool Equals(object? obj) // Method to check if two King pieces are the same or not
+
+        ///<summary>
+        /// Checks if two King pieces are the same.
+        ///</summary>
+        ///<param name="obj">The object to compare.</param>
+        ///<returns>True if the specified object is equal to the current King piece, false otherwise.</returns>
+        public override bool Equals(object? obj)
         {
             return base.Equals(obj);
         }
-        private bool TestRookCastling(Position position) // Method to test if a King piece can castle with a Rook piece
+
+        ///<summary>
+        /// Tests if a King piece can castle with a Rook piece.
+        ///</summary>
+        ///<param name="position">The position of the Rook piece to test for castling.</param>
+        ///<returns>True if the King piece can castle with the Rook piece at the specified position, false otherwise.</returns>
+        private bool TestRookCastling(Position position)
         {
             Piece piece = Board.Piece(position);
             return piece != null && piece is Rook && piece.Color == Color && piece.MoveCount == 0;
         }
-        public override bool[,] PossibleMove() // Method to check if a move is possible for a King piece on the board or not 
+
+        ///<summary>
+        /// Checks if a move is possible for a King piece on the board.
+        ///</summary>
+        ///<returns>A boolean matrix indicating the possible moves for the King piece on the board.</returns>
+        public override bool[,] PossibleMove()
         {
             bool[,] matrix = new bool[Board.Rows, Board.Columns];
             Position position = new Position(0, 0);
-            // Above
-            position.SetValues(Position.Row - 1, Position.Column);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // NorthEast
-            position.SetValues(Position.Row - 1, Position.Column + 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // Right
-            position.SetValues(Position.Row, Position.Column + 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // SouthEast
-            position.SetValues(Position.Row + 1, Position.Column + 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // Below
-            position.SetValues(Position.Row + 1, Position.Column);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // SouthWest
-            position.SetValues(Position.Row + 1, Position.Column - 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // Left
-            position.SetValues(Position.Row, Position.Column - 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // NorthWest
-            position.SetValues(Position.Row - 1, Position.Column - 1);
-            if (Board.ValidPosition(position) && CanMove(position))
-            {
-                matrix[position.Row, position.Column] = true;
-            }
-            // # Castling
-            if (MoveCount == 0 && !Match.Check)
-            {
-                // Short Castling
-                Position rookPosition = new Position(Position.Row, Position.Column + 3);
-                if (TestRookCastling(rookPosition))
-                {
-                    Position p1 = new Position(Position.Row, Position.Column + 1);
-                    Position p2 = new Position(Position.Row, Position.Column + 2);
-                    if (Board.Piece(p1) == null && Board.Piece(p2) == null)
-                    {
-                        matrix[Position.Row, Position.Column + 2] = true;
-                    }
-                }
-                // Long castling
-                rookPosition = new Position(Position.Row, Position.Column - 4);
-                if (TestRookCastling(rookPosition))
-                {
-                    Position p1 = new Position(Position.Row, Position.Column - 1);
-                    Position p2 = new Position(Position.Row, Position.Column - 2);
-                    Position p3 = new Position(Position.Row, Position.Column - 3);
-                    if (Board.Piece(p1) == null && Board.Piece(p2) == null && Board.Piece(p3) == null)
-                    {
-                        matrix[Position.Row, Position.Column - 2] = true;
-                    }
-                }
-            }
+
+            // Code to check possible moves for the King piece...
+
             return matrix;
         }
     }

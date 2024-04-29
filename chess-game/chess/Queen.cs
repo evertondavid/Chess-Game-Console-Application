@@ -8,12 +8,12 @@ namespace chess_game.chess
 {
     public class Queen : Piece
     {
-        public Queen(Board board, Color color) : base(board, color) // Constructor
+        public Queen(Board board, Color color) : base(board, color, color == Color.White ? "♕" : "♛")
         {
         }
         public override string ToString() // Method to return the string "Q"
         {
-            return "Q";
+            return Symbol;
         }
         private bool CanMove(Position position) // Method to check if a Queen piece can move to a position on the board or not
         {

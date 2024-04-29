@@ -7,12 +7,12 @@ namespace chess_game.chess
 {
     public class Rook : Piece
     {
-        public Rook(Board board, Color color) : base(board, color) // Constructor
+        public Rook(Board board, Color color) : base(board, color, color == Color.White ? "♖" : "♜")
         {
         }
         public override string ToString() // Method to return the string "R"
         {
-            return "R";
+            return Symbol;
         }
         private bool CanMove(Position position) // Method to check if a King piece can move to a given position on the board or not
         {

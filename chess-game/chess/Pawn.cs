@@ -14,13 +14,13 @@ namespace chess_game.chess
     public class Pawn : Piece
     {
         private ChessMatch ChessMatch; // Property to store the ChessMatch object
-        public Pawn(Board board, Color color, ChessMatch chessMatch) : base(board, color) // Constructor
+        public Pawn(Board board, Color color, ChessMatch chessMatch) : base(board, color, color == Color.White ? "♙" : "♟︎")
         {
             ChessMatch = chessMatch;
         }
         public override string ToString() // Method to return the string "P"
         {
-            return "P";
+            return Symbol;
         }
         private bool ThereIsEnemy(Position position) // Method to check if there is an enemy piece in a given position on the board or not
         {

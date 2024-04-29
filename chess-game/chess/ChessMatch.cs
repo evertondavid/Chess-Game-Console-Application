@@ -9,12 +9,15 @@ namespace chess_game.chess
         public int Turn { get; private set; }
         public Color CurrentPlayer { get; private set; }
         public bool Checkmate { get; private set; }
-        private HashSet<Piece> Pieces; // HashSet to store the pieces in the match 
-        private HashSet<Piece> CapturedPieces; // HashSet to store the captured pieces in the match
+        private readonly HashSet<Piece> Pieces;
+        private readonly HashSet<Piece> CapturedPieces;
         public bool Check { get; private set; }
         public Piece EnPassantVulnerable { get; private set; }
 
-        public ChessMatch() // Constructor to create a new chess match
+        /// <summary>
+        /// Initializes a new instance of the ChessMatch class.
+        /// </summary>
+        public ChessMatch()
         {
             Board = new Board(8, 8);
             Turn = 1;
@@ -26,6 +29,7 @@ namespace chess_game.chess
             EnPassantVulnerable = null;
             PlacePieces();
         }
+
         public Piece ExecuteMove(Position origin, Position destination) // Method to execute a move on the board
         {
             Piece piece = Board.RemovePiece(origin);
