@@ -1,4 +1,3 @@
-using System;
 namespace chess_game;
 public class BoardException : Exception
 {

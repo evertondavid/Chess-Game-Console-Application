@@ -1,4 +1,3 @@
-using System;
 namespace chess_game.chess
 {
     public class ChessPosition

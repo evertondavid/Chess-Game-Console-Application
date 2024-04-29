@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using chess_game;
 namespace chess_game.chess
 {
     public class ChessMatch

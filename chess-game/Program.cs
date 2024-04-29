@@ -1,6 +1,5 @@
 ﻿using chess_game;
 using chess_game.chess;
-using System;
 try
 {
     ChessMatch match = new ChessMatch();
@@ -11,10 +10,6 @@ try
         {
             Console.Clear();
             Screen.PrintMatch(match);
-            //Screen.PrintBoard(match.Board);
-            //System.Console.WriteLine();
-            //System.Console.WriteLine("Turn: " + match.Turn);
-            //System.Console.WriteLine("Waiting move: " + match.CurrentPlayer);
             System.Console.WriteLine();
             System.Console.Write("Origin: ");
             Position origin = Screen.ReadChessPosition().ToPosition();
